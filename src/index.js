@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+//import { formatDistance, subDays } from 'date-fns'
 
 import './index.css'
 import NewTaskForm from './components/new-task-form'
@@ -10,6 +11,14 @@ export default class App extends Component {
 
   maxId = 100;
 
+  static propTypes = {
+    maxId: (props, propName, componentName) => {
+      const val = props[propName];
+      if (typeof val === 'number' && !isNaN(val)) return null;
+      return new TypeError('Error')
+    }
+  }
+
   state = {
     taskData: [
       this.createTaskItem('Completed task'),
@@ -18,6 +27,7 @@ export default class App extends Component {
     ],
     filter: 'all',
   }
+
 
   onFilterChange = (filter) => {
     this.setState({ filter });
@@ -41,6 +51,7 @@ export default class App extends Component {
       label,
       completed: false,
       id: this.maxId++,
+      createdTask: new Date(),
     }
   }
 
@@ -125,6 +136,10 @@ export default class App extends Component {
     )
   }
 
+}
+
+App.defaultProps = {
+  maxId: 100,
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))

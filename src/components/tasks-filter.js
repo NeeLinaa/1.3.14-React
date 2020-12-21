@@ -32,3 +32,11 @@ export default class TasksFilter extends Component {
         )
     }
 }
+
+TasksFilter.defaultProps = {
+    buttons: [
+        { name: 'all', label: 'All', },
+        { name: 'active', label: 'Active', },
+        { name: 'completed', label: 'Completed', },
+    ],
+}
