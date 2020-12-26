@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//import { formatDistance, subDays } from 'date-fns'
 
 import './index.css'
 import NewTaskForm from './components/new-task-form'
@@ -9,16 +8,6 @@ import Footer from './components/footer';
 
 export default class App extends Component {
 
-  maxId = 100;
-
-  static propTypes = {
-    maxId: (props, propName, componentName) => {
-      const val = props[propName];
-      if (typeof val === 'number' && !isNaN(val)) return null;
-      return new TypeError('Error')
-    }
-  }
-
   state = {
     taskData: [
       this.createTaskItem('Completed task'),
@@ -26,33 +15,6 @@ export default class App extends Component {
       this.createTaskItem('Active task'),
     ],
     filter: 'all',
-  }
-
-
-  onFilterChange = (filter) => {
-    this.setState({ filter });
-  }
-
-  filter(items, filter) {
-    switch (filter) {
-      case 'all':
-        return items;
-      case "active":
-        return items.filter((item) => !item.completed);
-      case 'completed':
-        return items.filter((item) => item.completed);
-      default:
-        return items;
-    }
-  }
-
-  createTaskItem(label) {
-    return {
-      label,
-      completed: false,
-      id: this.maxId++,
-      createdTask: new Date(),
-    }
   }
 
   deleteItem = (id) => {
@@ -98,6 +60,8 @@ export default class App extends Component {
     this.setState(({ taskData }) => {
       const idx = taskData.findIndex((el) => el.id === id)
 
+    console.log(taskData)
+
       const oldItem = taskData[idx]
       const newItem = { ...oldItem, completed: !oldItem.completed }
 
@@ -108,6 +72,32 @@ export default class App extends Component {
       }
 
     })
+  }
+
+  onFilterChange = (filter) => {
+    this.setState({ filter });
+  }
+
+  createTaskItem(label) {
+    return {
+      label,
+      completed: false,
+      id: this.maxId+1,
+      createdTask: new Date(),
+    }
+  }
+
+  filter(items, filter) {
+    switch (filter) {
+      case 'all':
+        return items;
+      case "active":
+        return items.filter((item) => !item.completed);
+      case 'completed':
+        return items.filter((item) => item.completed);
+      default:
+        return items;
+    }
   }
 
   render() {
@@ -124,7 +114,7 @@ export default class App extends Component {
         <NewTaskForm onItemAdded={this.addItem} />
         <section className="main">
           <TaskList
-            props={visibleItems}
+            todos={visibleItems}
             onDeleted={this.deleteItem}
             onToggleCompleted={this.onToggleCompleted} />
           <Footer leftToDo={leftTodoCount}
@@ -136,10 +126,6 @@ export default class App extends Component {
     )
   }
 
-}
-
-App.defaultProps = {
-  maxId: 100,
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))

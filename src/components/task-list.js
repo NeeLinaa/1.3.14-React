@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Task from './task'
 
-const TaskList = ({ props, onDeleted, onToggleCompleted }) => {
+const TaskList = ({ todos, onDeleted, onToggleCompleted }) => {
 
-    const elem = props.map(item => {
+    const elem = todos.map(item => {
         const { id, ...itemProps } = item;
         return (
-            <div key={id}>
+            <div key={Math.random() * 10}>
                 <Task
                     {...itemProps}
                     onDeleted={() => onDeleted(id)}
@@ -21,6 +22,22 @@ const TaskList = ({ props, onDeleted, onToggleCompleted }) => {
             {elem}
         </ul>
     )
+}
+
+TaskList.defaultProps = {
+    todos: [],
+    onDeleted: () => {},
+    onToggleCompleted: () => {},
+}
+
+TaskList.propTypes = {
+    todos: PropTypes.arrayOf(PropTypes.shape({
+        label: '',
+        completed: PropTypes.bool,
+        id: PropTypes.number
+    })),
+    onDeleted: PropTypes.func,
+    onToggleCompleted: PropTypes.func
 }
 
 export default TaskList;

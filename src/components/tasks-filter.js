@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class TasksFilter extends Component {
 
@@ -7,6 +8,16 @@ export default class TasksFilter extends Component {
         { name: 'active', label: 'Active', },
         { name: 'completed', label: 'Completed', },
     ]
+
+    static defaultProps = {
+        filter: '',
+        onFilterChange: () => {}
+    }
+
+    static propTypes = {
+        filter: PropTypes.string,
+        onFilterChange: PropTypes.func
+    }
 
     render() {
 
@@ -17,7 +28,8 @@ export default class TasksFilter extends Component {
             const clazz = isActive ? 'selected' : '';
             return (
                 <li key={name}>
-                    <button className={`${name} ${clazz}`}
+                    <button type='button' 
+                        className={`${name} ${clazz}`}
                         onClick={() => onFilterChange(name)} >
                         {label}
                     </button>
@@ -31,12 +43,4 @@ export default class TasksFilter extends Component {
             </ul>
         )
     }
-}
-
-TasksFilter.defaultProps = {
-    buttons: [
-        { name: 'all', label: 'All', },
-        { name: 'active', label: 'Active', },
-        { name: 'completed', label: 'Completed', },
-    ],
 }

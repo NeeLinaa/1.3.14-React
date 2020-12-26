@@ -1,35 +1,49 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns'
 
-export default class Task extends Component {
+const Task = ({ label, onDeleted, onToggleCompleted, completed, createdTask, id }) => {
 
-    render() {
-
-        const { label, onDeleted, onToggleCompleted, completed, createdTask } = this.props;
-
-        let classNames = ''
+    let classNames = ''
         if (completed) {
             classNames += ' completed';
         }
 
-        return (
-
-            <li className={classNames}>
+    return(
+        <li className={classNames}>
                 <div className="view">
-                    <input className="toggle" type="checkbox"
+                    <label htmlFor ="a" >
+                    <input id="a" name='a' className="toggle" type="checkbox"
                         onClick={onToggleCompleted} />
-                    <label>
                         <span className="description">{label}</span>
                         <span className="created">{formatDistanceToNow(createdTask,
                             { addSuffix: true, includeSeconds: true })}</span>
                     </label>
-                    <button className="icon icon-edit"></button>
-                    <button
+                    <button label='Button' type='button'
+                            className="icon icon-edit" />
+                    <button label='Button' type='button'
                         className="icon icon-destroy"
-                        onClick={onDeleted}></button>
+                        onClick={onDeleted(id)} />
                 </div>
             </li>
-
-        )
-    }
+    )
+    
 }
+
+Task.defaultProps = {
+    label: '',
+    onDeleted: () => {},
+    onToggleCompleted: () => {},
+    completed: false,
+    createdTask: {}
+}
+
+Task.propTypes = {
+    label: PropTypes.string,
+    onDeleted: PropTypes.func,
+    onToggleCompleted: PropTypes.func,
+    completed: PropTypes.bool,
+    createdTask: PropTypes.instanceOf(Date)
+}
+
+export default Task;
