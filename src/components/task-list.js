@@ -6,13 +6,15 @@ import Task from './task'
 const TaskList = ({ todos, onDeleted, onToggleCompleted }) => {
 
     const elem = todos.map(item => {
-        const { id, ...itemProps } = item;
+        const { ...itemProps } = item;
+
         return (
             <div key={Math.random() * 10}>
                 <Task
+                    todos={todos}
                     {...itemProps}
-                    onDeleted={() => onDeleted(id)}
-                    onToggleCompleted={() => onToggleCompleted(id)} />
+                    onDeleted={() => onDeleted(item.id)}
+                    onToggleCompleted={() => onToggleCompleted(item.id)} />
             </div>
         )
     })

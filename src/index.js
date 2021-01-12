@@ -8,6 +8,8 @@ import Footer from './components/footer';
 
 export default class App extends Component {
 
+  maxId = 10;
+
   state = {
     taskData: [
       this.createTaskItem('Completed task'),
@@ -58,9 +60,8 @@ export default class App extends Component {
   onToggleCompleted = (id) => {
 
     this.setState(({ taskData }) => {
-      const idx = taskData.findIndex((el) => el.id === id)
 
-    console.log(taskData)
+      const idx = taskData.findIndex((el) => el.id === id)
 
       const oldItem = taskData[idx]
       const newItem = { ...oldItem, completed: !oldItem.completed }
@@ -79,10 +80,11 @@ export default class App extends Component {
   }
 
   createTaskItem(label) {
+    this.maxId += 1;
     return {
       label,
       completed: false,
-      id: this.maxId+1,
+      id: this.maxId,
       createdTask: new Date(),
     }
   }
