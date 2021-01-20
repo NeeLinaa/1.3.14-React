@@ -17,6 +17,7 @@ export default class App extends Component {
       this.createTaskItem('Active task'),
     ],
     filter: 'all',
+    date: new Date(),
   }
 
   onFilterChange = (filter) => {
@@ -41,6 +42,7 @@ export default class App extends Component {
       label,
       completed: false,
       id: this.maxId++,
+      created: new Date(),
     }
   }
 

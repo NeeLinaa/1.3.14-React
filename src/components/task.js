@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 
 export default class Task extends Component {
 
     render() {
 
-        const { label, onDeleted, onToggleCompleted, completed } = this.props;
+        const { label, onDeleted, onToggleCompleted, completed, created } = this.props;
 
-        let classNames = ''
+        let classNames = '';
         if (completed) {
             classNames += ' completed';
         }
@@ -19,9 +20,8 @@ export default class Task extends Component {
                         onClick={onToggleCompleted} />
                     <label>
                         <span className="description">{label}</span>
-                        <span className="created"></span>
+                        <span className="created">{ formatDistanceToNow(created, { addSuffix: true, includeSeconds: true }) }</span>
                     </label>
-                    <button className="icon icon-edit"></button>
                     <button
                         className="icon icon-destroy"
                         onClick={onDeleted}></button>
