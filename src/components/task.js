@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 
 export default class Task extends Component {
 
+    state = {
+        
+    }
+
     render() {
 
-        const { label, onDeleted, onToggleCompleted, completed } = this.props;
-
-        let classNames = ''
+        const { label, onDeleted, onToggleCompleted, completed, created, min, sec, toggleTimerStart, toggleTimerPause } = this.props;
+        
+        let classNames = '';
         if (completed) {
             classNames += ' completed';
         }
@@ -18,10 +23,20 @@ export default class Task extends Component {
                     <input className="toggle" type="checkbox"
                         onClick={onToggleCompleted} />
                     <label>
-                        <span className="description">{label}</span>
-                        <span className="created"></span>
+                        <span className="title">{label}</span>
+                        <span className="description">
+                            <button 
+                                onClick={toggleTimerStart}
+                                className="icon icon-play" 
+                            ></button>
+                            <button 
+                                onClick={toggleTimerPause}
+                                className="icon icon-pause"
+                            ></button>
+                            <span className="timer">{min}:{sec}</span>
+                        </span>
+                        <span className="description">{ formatDistanceToNow(created, { addSuffix: true, includeSeconds: true }) }</span>
                     </label>
-                    <button className="icon icon-edit"></button>
                     <button
                         className="icon icon-destroy"
                         onClick={onDeleted}></button>
