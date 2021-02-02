@@ -1,39 +1,89 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class NewTaskForm extends Component {
+  state = {
+    label: '',
+    min: '',
+    sec: '',
+  };
 
-    state = {
-        label: '',
-    }
+  static defaultProps = {
+    onItemAdded: () => {},
+  };
 
-    onLabelChahge = (e) => {
+  static propTypes = {
+    onItemAdded: PropTypes.func,
+  };
+
+  onChange = (event) => {
+    const { target } = event;
+    const { name } = target;
+    switch (name) {
+      case 'label':
         this.setState({
-            label: e.target.value,
-        })
-    }
-
-    onSubmit = (e) => {
-        e.preventDefault();
-        this.props.onItemAdded(this.state.label)
+          label: target.value,
+        });
+        break;
+      case 'min':
         this.setState({
-            label: '',
-        })
+          min: target.value,
+        });
+        break;
+      case 'sec':
+        this.setState({
+          sec: target.value,
+        });
+        break;
+      default:
+        break;
     }
+  };
 
-    render() {
-        return (
-            <header className="header">
-                <h1>todos</h1>
-                <form
-                    onSubmit={this.onSubmit}>
-                    <input className="new-todo"
-                        required
-                        placeholder="What needs to be done?" autoFocus
-                        onChange={this.onLabelChahge}
-                        value={this.state.label} />
-                </form>
-            </header>
-        );
-    }
-};
+  onSubmit = (event) => {
+    const { label, min, sec } = this.state;
+    const { onItemAdded } = this.props;
+    event.preventDefault();
+    onItemAdded(label, min, sec);
+  };
 
+  render() {
+    const { label } = this.state;
+
+    return (
+      <section>
+        <header className="header">
+          <h1>todos</h1>
+          <form className="new-todo-form" onSubmit={this.onSubmit}>
+            <input
+              type="text"
+              className="new-todo"
+              required
+              placeholder="Task"
+              onChange={this.onChange}
+              value={label}
+              name="label"
+            />
+            <input
+              type="number"
+              className="new-todo-form__timer"
+              required
+              placeholder="Min"
+              onChange={this.onChange}
+              name="min"
+            />
+            <input
+              type="number"
+              className="new-todo-form__timer"
+              required
+              placeholder="Sec"
+              onChange={this.onChange}
+              name="sec"
+            />
+            <input type="submit" className="hideSubmit" />
+          </form>
+        </header>
+      </section>
+    );
+  }
+}
